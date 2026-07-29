@@ -15,14 +15,13 @@ const userSchema = new mongoose.Schema(
       unique: true,
       trim: true,
       lowercase: true,
-      match: [/\S+@\S+\.\S+/, "Please provide a valid email address"],
+      match: [/\S+@\S+\.\S+/, "Please provide a valid email address"], // regex for non-whitespace characters
     },
     password: {
       type: String,
       required: [true, "Password is required"],
       trim: true,
       minLength: [6, "Password must be at least 6 characters long"],
-      maxLength: [50, "Password must be at most 50 characters long"],
     },
   },
   { timestamp: true },
