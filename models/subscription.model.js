@@ -73,7 +73,7 @@ const subscriptionSchema = new mongoose.Schema(
       index: true,
     },
   },
-  { timestamp: true },
+  { timestamps: true },
 );
 
 // pre save hook
