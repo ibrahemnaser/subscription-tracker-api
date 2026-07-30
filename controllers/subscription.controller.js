@@ -15,3 +15,16 @@ export const createSubscription = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getUserSubscription = async (req, res, next) => {
+  try {
+    const userSubs = await Subscription.find({ user: req.userId });
+
+    res.status(200).json({
+      success: true,
+      data: userSubs,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
