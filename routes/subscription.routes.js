@@ -5,25 +5,9 @@ import {
   getUserSubscription,
 } from "../controllers/subscription.controller.js";
 // middlewares
+import ensureOwnership from "../middlewares/authorization/ensureOwnership.js";
+import resolveUserId from "../middlewares/authorization/resolveUserId.js";
 import auth from "../middlewares/auth.middleware.js";
-
-// temp
-const getUserDetailsMiddleware = (controller) => {
-  return (req, res, next) => {
-    try {
-      if (req.params?.id && req.user.id !== req.params.id) {
-        const error = new Error("Unauthorized!!!");
-        error.statusCode = 401;
-        throw error;
-      }
-
-      req.userId = req.user.id;
-      controller(req, res, next);
-    } catch (error) {
-      next(error);
-    }
-  };
-};
 
 const subscriptionRouter = Router();
 
@@ -43,8 +27,14 @@ subscriptionRouter.delete("/:id", (req, res) =>
   res.send({ message: "Delete one subscription" }),
 );
 
-subscriptionRouter.get("/user/me", auth, getUserDetailsMiddleware(getUserSubscription)); // only validate
-subscriptionRouter.get("/user/:id", auth, getUserDetailsMiddleware(getUserSubscription)); // pass id and validate
+subscriptionRouter.get("/user/me", auth, resolveUserId, getUserSubscription); // only validate
+subscriptionRouter.get(
+  "/user/:id",
+  auth,
+  ensureOwnership,
+  resolveUserId,
+  getUserSubscription,
+); // pass id and validate
 
 subscriptionRouter.put("/:id/cancel", (req, res) =>
   res.send({ message: "Cancel one subscription" }),
