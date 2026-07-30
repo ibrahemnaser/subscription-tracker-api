@@ -8,12 +8,14 @@ import userRouter from "./routes/user.routes.js";
 import subscriptionRouter from "./routes/subscription.routes.js";
 import connectDB from "./database/mongodb.js";
 import errorHandler from "./middlewares/errorHandler.middleware.js";
+import arcjetMiddleware from "./middlewares/arcjet.middleware.js";
 
 const app = express();
 
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: false })); // for parsing application/x-www-form-urlencoded
 app.use(cookieParser());
+app.use(arcjetMiddleware);
 
 //
 app.use("/api/v1/auth", authRouter);
