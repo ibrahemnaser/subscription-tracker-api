@@ -88,8 +88,9 @@ subscriptionSchema.pre("save", function () {
       yearly: 365,
     };
 
-    subscription.renewalDate = new Date(
-      subscription.startDate.getDate() + renewalPeriod[subscription.frequency],
+    subscription.renewalDate = new Date(subscription.startDate);
+    subscription.renewalDate.setDate(
+      subscription.renewalDate.getDate() + renewalPeriod[subscription.frequency],
     );
   }
 
